@@ -5,12 +5,9 @@ import mongoose from 'mongoose'
 import http from "http";
 import cookieParser from 'cookie-parser';
 
-
-
 const app: Express = express();
 const PORT: string | number = process.env.PORT || 5000;
 const server = http.createServer(app);
-
 
 app.use(
   cors({
