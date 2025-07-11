@@ -42,6 +42,17 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());
 
+const uri:string = process.env.MONGODB_URI || "mongodb://localhost:27017/your-app" ;
+
+(async () => {
+  try {
+    await mongoose.connect(uri);
+    console.log("Connected to the database");
+  } catch (error) {
+    console.error(error);
+  }
+})();
+
 app.get("/", (_req: Request, res: Response) => {
   res.status(200).send("Server is running");
 });
