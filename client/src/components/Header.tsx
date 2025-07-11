@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 interface HeaderProps {
   isLoggedIn?: boolean;
@@ -13,6 +14,11 @@ const Header: React.FC<HeaderProps> = ({
   showDropdown,
   setShowDropdown,
 }) => {
+  const navigate = useNavigate();
+
+  const handleCreatePost = () => {
+    navigate('/createPost')
+  }
   return (
     <header className="bg-[#121212] border-b border-gray-800 sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -71,7 +77,7 @@ const Header: React.FC<HeaderProps> = ({
               </>
             ) : (
               <>
-                <button className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-100 transition-all duration-200 flex items-center">
+                <button className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-100 transition-all duration-200 flex items-center" onClick={handleCreatePost}>
                   <svg
                     className="h-4 w-4 mr-2"
                     fill="none"
