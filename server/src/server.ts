@@ -4,6 +4,7 @@ import cors from 'cors';
 import mongoose from 'mongoose'
 import http from "http";
 import cookieParser from 'cookie-parser';
+import userRouter from './routes/userRoutes';
 
 const app: Express = express();
 const PORT: string | number = process.env.PORT || 5000;
@@ -56,6 +57,9 @@ const uri:string = process.env.MONGODB_URI || "mongodb://localhost:27017/your-ap
 app.get("/", (_req: Request, res: Response) => {
   res.status(200).send("Server is running");
 });
+
+app.use("/user",userRouter);
+
 
 server.listen(PORT, () => {
   console.log(`Server is running on PORT: ${PORT}`);
