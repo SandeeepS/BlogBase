@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+dotenv.config();
 import express ,{Express,Request,Response} from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose'
@@ -43,7 +44,7 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());
 
-const uri:string = process.env.MONGODB_URI || "mongodb://localhost:27017/your-app" ;
+const uri:string = process.env.MONGODB_URI || "" ;
 
 (async () => {
   try {
