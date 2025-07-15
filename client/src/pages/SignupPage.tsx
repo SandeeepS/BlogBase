@@ -1,29 +1,32 @@
 import React, { useState } from "react";
+import { signup } from "../api/user";
 
 const SignupPage: React.FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async () => {
-    setIsLoading(true);
-
-    // Basic validation
-    if (password !== confirmPassword) {
-      alert("Passwords do not match!");
+    try {
+      setIsLoading(true);
+      const response = await signup(
+        name,
+        email,
+        Number(password),
+        confirmPassword,
+        phone
+      );
+      console.log(response);
       setIsLoading(false);
-      return;
+      console.log("Signup attempted with:", { name, email, password });
+    } catch (error) {
+      console.log("Error occured while signup from the signup form", error);
     }
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    setIsLoading(false);
-    console.log("Signup attempted with:", { name, email, password });
   };
 
   return (
@@ -77,6 +80,29 @@ const SignupPage: React.FC = () => {
                     />
                   </svg>
                 </div>
+              </div>
+            </div>
+
+            {/**phone input  */}
+
+            <div>
+              <label
+                htmlFor="phone"
+                className="block text-sm font-medium text-white mb-2"
+              >
+                Phone
+              </label>
+              <div className="relative">
+                <input
+                  id="phone"
+                  name="phone"
+                  type="text"
+                  required
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="w-full px-4 py-3 bg-transparent border border-white rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent transition-all duration-200"
+                  placeholder="Enter phone number"
+                />
               </div>
             </div>
 

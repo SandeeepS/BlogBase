@@ -19,6 +19,14 @@ const Header: React.FC<HeaderProps> = ({
   const handleCreatePost = () => {
     navigate('/createPost')
   }
+
+  const handleLogin = () => {
+    navigate('/login');
+  }
+
+  const handleSingup = () => {
+    navigate('/signup');
+  }
   return (
     <header className="bg-[#121212] border-b border-gray-800 sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -66,12 +74,12 @@ const Header: React.FC<HeaderProps> = ({
             {!isLoggedIn ? (
               <>
                 <button
-                  onClick={() => setIsLoggedIn(true)}
+                  onClick={handleLogin}
                   className="px-4 py-2 text-white border border-white rounded-lg hover:bg-white hover:text-black transition-all duration-200"
                 >
                   Login
                 </button>
-                <button className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-100 transition-all duration-200">
+                <button onClick={handleSingup} className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-100 transition-all duration-200">
                   Sign Up
                 </button>
               </>

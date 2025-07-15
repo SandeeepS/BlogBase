@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
 interface CustomError extends Error {
   message: string;
@@ -8,13 +8,14 @@ interface CustomError extends Error {
 const errorHandlerMiddleware = (
   err: CustomError,
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
   console.log("Error: ", err.message);
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal Server Error";
 
-  res.status(statusCode).json({
+  res.json({
     statusCode,
     success: false,
     message: message,
