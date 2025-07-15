@@ -1,4 +1,6 @@
 import {
+    IUserLoginData,
+  IUserLoginResponse,
   IUserSignupData,
   IUserSignupDataResponse,
 } from "../dataContracts/user/IUserDataContracts";
@@ -35,4 +37,13 @@ export class UserRepository
       throw error;
     }
   }
+
+    async login(userLoginData:IUserLoginData):Promise<IUserLoginResponse | null>{
+      try{
+          return null
+      }catch(error){
+          console.log("Error occured while login in the loging funtion in the userRepository.ts");
+          throw error;
+      }
+    }
 }

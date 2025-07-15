@@ -1,4 +1,6 @@
 import {
+    IUserLoginData,
+  IUserLoginResponse,
   IUserSignupData,
   IUserSignupDataResponse,
 } from "../dataContracts/user/IUserDataContracts";
@@ -9,7 +11,7 @@ class UserService implements IUserServices {
   constructor(private _userRepository: IRepository) {}
   async signup(
     userSignUpData: IUserSignupData
-  ): Promise<IUserSignupDataResponse> {
+  ): Promise<IUserSignupDataResponse | null> {
     try {
       console.log("Reached in the UserService for userSignup");
       console.log("userDeatails in the userService is",userSignUpData);
@@ -21,6 +23,16 @@ class UserService implements IUserServices {
         error
       );
       throw error;
+    }
+  }
+
+  async login(userLoginData:IUserLoginData):Promise<IUserLoginResponse | null>{
+    try{
+        
+        return null
+    }catch(error){
+        console.log("Error occured while login in the loging funtion in the userService.ts");
+        throw error;
     }
   }
 }
