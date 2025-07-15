@@ -28,8 +28,8 @@ class UserService implements IUserServices {
 
   async login(userLoginData:IUserLoginData):Promise<IUserLoginResponse | null>{
     try{
-        
-        return null
+        const response = await this._userRepository.login(userLoginData);
+        return response;
     }catch(error){
         console.log("Error occured while login in the loging funtion in the userService.ts");
         throw error;

@@ -1,5 +1,5 @@
 import {
-    IUserLoginData,
+  IUserLoginData,
   IUserLoginResponse,
   IUserSignupData,
   IUserSignupDataResponse,
@@ -38,12 +38,32 @@ export class UserRepository
     }
   }
 
-    async login(userLoginData:IUserLoginData):Promise<IUserLoginResponse | null>{
-      try{
-          return null
-      }catch(error){
-          console.log("Error occured while login in the loging funtion in the userRepository.ts");
-          throw error;
+  async login(
+    userLoginData: IUserLoginData
+  ): Promise<IUserLoginResponse | null> {
+    try {
+      const { email } = userLoginData;
+      let query = { email: email };
+      const response = await this.find(query);
+      if (!response) {
+        return null;
       }
+      const { _id, name, email: userEmail } = response;
+      const userLoginResponse: IUserLoginResponse = {
+        id: _id.toString(),
+        name,
+        email: userEmail,
+      };
+      console.log(
+        "Userd details fetched in hte userRepository while login",
+        response
+      );
+      return userLoginResponse;
+    } catch (error) {
+      console.log(
+        "Error occured while login in the loging funtion in the userRepository.ts"
+      );
+      throw error;
     }
+  }
 }

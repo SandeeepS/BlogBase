@@ -19,4 +19,14 @@ export class BaseRepository<T> implements IBaseRepository<T> {
       throw error;
     }
   }
+
+  async find(item:Partial<T>):Promise<T|null>{
+    try{
+        const user = await this._model.findOne(item);
+        return user as T | null;
+    }catch(error){
+        console.log("Error in BaseRepository while saving the data",error);
+        throw error;
+    }
+  }
 }

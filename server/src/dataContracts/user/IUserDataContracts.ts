@@ -12,7 +12,6 @@ export interface IUserSignupDataResponse{
     phone:Number;
 }
 
-
 export interface IUserLoginData{
     email:string;
     password:string;
