@@ -1,6 +1,6 @@
 // components/CreatePost.tsx
 import React, { useState } from "react";
-import Header from "../components/Header";
+import Header from "../../components/Header";
 
 const CreatePost: React.FC = () => {
   const [title, setTitle] = useState("");

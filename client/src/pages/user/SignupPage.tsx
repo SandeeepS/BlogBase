@@ -1,26 +1,36 @@
 import React, { useState } from "react";
-import { login } from "../api/user";
+import { signup } from "../../api/user";
 
-const LoginPage: React.FC = () => {
+const SignupPage: React.FC = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
-      const response = await login(email, password);
-      console.log("Response from the backend is ", response);
+      const response = await signup(
+        name,
+        email,
+        Number(password),
+        confirmPassword,
+        phone
+      );
+      console.log(response);
       setIsLoading(false);
+      console.log("Signup attempted with:", { name, email, password });
     } catch (error) {
-      console.log("error while login user in the login page", error);
-      throw error;
+      console.log("Error occured while signup from the signup form", error);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#121212]">
+    <div className="min-h-screen flex items-center justify-center bg-[#121212] py-8">
       <div className="max-w-md w-full">
         {/* Header */}
         <div className="text-center">
@@ -29,15 +39,73 @@ const LoginPage: React.FC = () => {
               <img src="/public/logo.png.png" alt="" />
             </div>
           </div>
-          <h2 className="text-3xl font-bold text-white mb-2">
-            Welcome Back To BlogBase
-          </h2>
-          <p className="text-gray-400">Sign in to your account</p>
+          <h2 className="text-3xl font-bold text-white mb-2">Join BlogBase</h2>
+          <p className="text-gray-400">Create your account to get started</p>
         </div>
 
-        {/* Login Form */}
+        {/* Signup Form */}
         <div className="mt-8 space-y-6">
           <div className="space-y-4">
+            {/* Name Input */}
+            <div>
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-white mb-2"
+              >
+                Full Name
+              </label>
+              <div className="relative">
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full px-4 py-3 bg-transparent border border-white rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent transition-all duration-200"
+                  placeholder="Enter your full name"
+                />
+                <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+                  <svg
+                    className="h-5 w-5 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            {/**phone input  */}
+
+            <div>
+              <label
+                htmlFor="phone"
+                className="block text-sm font-medium text-white mb-2"
+              >
+                Phone
+              </label>
+              <div className="relative">
+                <input
+                  id="phone"
+                  name="phone"
+                  type="text"
+                  required
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="w-full px-4 py-3 bg-transparent border border-white rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent transition-all duration-200"
+                  placeholder="Enter phone number"
+                />
+              </div>
+            </div>
+
             {/* Email Input */}
             <div>
               <label
@@ -137,15 +205,69 @@ const LoginPage: React.FC = () => {
                 </button>
               </div>
             </div>
-          </div>
 
-          {/* Remember Me & Forgot Password */}
-          <div className="flex items-center justify-between">
-            {/* <div className="text-sm">
-              <a href="#" className="text-white hover:text-gray-300 transition-colors">
-                Forgot your password?
-              </a>
-            </div> */}
+            {/* Confirm Password Input */}
+            <div>
+              <label
+                htmlFor="confirmPassword"
+                className="block text-sm font-medium text-white mb-2"
+              >
+                Confirm Password
+              </label>
+              <div className="relative">
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type={showConfirmPassword ? "text" : "password"}
+                  required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full px-4 py-3 bg-transparent border border-white rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent transition-all duration-200"
+                  placeholder="Confirm your password"
+                />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                  {showConfirmPassword ? (
+                    <svg
+                      className="h-5 w-5 text-gray-400 hover:text-white transition-colors"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      className="h-5 w-5 text-gray-400 hover:text-white transition-colors"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                      />
+                    </svg>
+                  )}
+                </button>
+              </div>
+            </div>
           </div>
 
           {/* Submit Button */}
@@ -178,7 +300,7 @@ const LoginPage: React.FC = () => {
                   ></path>
                 </svg>
               ) : (
-                "Sign In"
+                "Create Account"
               )}
             </button>
           </div>
@@ -192,15 +314,15 @@ const LoginPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Sign Up Link */}
-          <div className="text-center mt-12">
+          {/* Sign In Link */}
+          <div className="text-center mt-6">
             <p className="text-sm text-gray-400">
-              Don't have an account?{" "}
+              Already have an account?{" "}
               <a
-                href="/signup"
+                href="/login"
                 className="font-medium text-white hover:text-gray-300 transition-colors"
               >
-                Sign up here
+                Sign in here
               </a>
             </p>
           </div>
@@ -210,4 +332,4 @@ const LoginPage: React.FC = () => {
   );
 };
 
-export default LoginPage;
+export default SignupPage;

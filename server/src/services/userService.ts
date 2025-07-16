@@ -16,6 +16,7 @@ class UserService implements IUserServices {
       console.log("Reached in the UserService for userSignup");
       console.log("userDeatails in the userService is",userSignUpData);
       const response = await this._userRepository.signup(userSignUpData);
+      console.log(response);
       return userSignUpData;
     } catch (error) {
       console.log(
@@ -35,6 +36,8 @@ class UserService implements IUserServices {
         throw error;
     }
   }
+
+  
 }
 
 export default UserService;

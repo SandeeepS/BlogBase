@@ -1,6 +1,6 @@
 // pages/HomePage.tsx
 import React, { useState } from "react";
-import Header from "../components/Header";
+import Header from "../../components/Header";
 
 const HomePage: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

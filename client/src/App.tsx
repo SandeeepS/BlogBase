@@ -1,19 +1,29 @@
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
-import SignupPage from "./pages/SignupPage";
-import HomePage from "./pages/HomePage";
-import CreatePost from "./pages/CreatePost";
+import LoginPage from "./pages/user/LoginPage";
+import SignupPage from "./pages/user/SignupPage";
+import HomePage from "./pages/user/HomePage";
+import CreatePost from "./pages/user/CreatePost";
+import UserLoggedIn from "./middleware/User/UserLoggedIn";
+import UserLoggedOut from "./middleware/User/UserLoggedOut";
+import PageNotFound from "./pages/common/PageNotFound";
 
 function App() {
   return (
     <>
       <Routes>
-          <Route path="/login" element={<LoginPage />}/>
-          <Route path="/signup" element={<SignupPage/>}/> 
-          <Route path="/homepage" element={<HomePage/>}/>
-          <Route path="/createpost" element={<CreatePost/>}/>
+        <Route path="" element={<UserLoggedOut />}>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+        </Route>
+
+        <Route path="/" element={<UserLoggedIn />}>
+          <Route path="user/homepage" element={<HomePage />} />
+          <Route path="user/createpost" element={<CreatePost />} />
+        </Route>
+        <Route path={"*"} element={<PageNotFound/>} />
       </Routes>
+
     </>
   );
 }
