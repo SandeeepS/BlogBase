@@ -1,46 +1,52 @@
 import React, { useState } from "react";
+import { useFormik } from "formik";
 import { login } from "../../api/user";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUserCredential } from "../../app/slices/authSlice";
 import toast from "react-hot-toast";
+import { LoginValidation } from "../../utils/validation";
 
 const LoginPage: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleSubmit = async () => {
-    try {
-      setIsLoading(true);
-      const response = await login(email, password);
-      console.log("Response from the backend is ", response);
-      if(response.data.status === "success" && response.data.data.response !== null){
-         dispatch(setUserCredential(response.data.data.response));
-         navigate("/homepage");
-      }else{
-        console.log("Login failed due to incorrect password or email");
-       toast.error("Login failed!!");
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: LoginValidation,
+    onSubmit: async (values) => {
+      try {
+        setIsLoading(true);
+        const response = await login(values.email, values.password);
+        if (
+          response.data.status === "success" &&
+          response.data.data.response !== null
+        ) {
+          dispatch(setUserCredential(response.data.data.response));
+          navigate("/homepage");
+        } else {
+          toast.error("Login failed!!");
+        }
+      } catch (error) {
+        console.log("error while login user in the login page", error);
+        toast.error("An error occurred while logging in.");
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
-    } catch (error) {
-      console.log("error while login user in the login page", error);
-      throw error;
-    }
-  };
+    },
+  });
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#121212]">
       <div className="max-w-md w-full">
-        {/* Header */}
         <div className="text-center">
           <div className="mx-auto h-12 w-12 flex items-center justify-center rounded-full border-2 border-white mb-4">
-            <div className="h-6 w-6 text-white">
-              <img src="/public/logo.png.png" alt="" />
-            </div>
+            <img src="/public/logo.png.png" alt="Logo" className="h-6 w-6" />
           </div>
           <h2 className="text-3xl font-bold text-white mb-2">
             Welcome Back To BlogBase
@@ -48,44 +54,36 @@ const LoginPage: React.FC = () => {
           <p className="text-gray-400">Sign in to your account</p>
         </div>
 
-        {/* Login Form */}
-        <div className="mt-8 space-y-6">
+        <form
+          onSubmit={formik.handleSubmit}
+          className="mt-8 space-y-6"
+          noValidate
+        >
           <div className="space-y-4">
             {/* Email Input */}
             <div>
               <label
                 htmlFor="email"
                 className="block text-sm font-medium text-white mb-2"
-              >
-                Email Address
-              </label>
+              ></label>
               <div className="relative">
                 <input
                   id="email"
                   name="email"
                   type="email"
                   required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   className="w-full px-4 py-3 bg-transparent border border-white rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent transition-all duration-200"
                   placeholder="Enter your email"
                 />
-                <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                  <svg
-                    className="h-5 w-5 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
-                    />
-                  </svg>
-                </div>
               </div>
+              {formik.touched.email && formik.errors.email && (
+                <p className="text-red-400 text-sm mt-1">
+                  {formik.errors.email}
+                </p>
+              )}
             </div>
 
             {/* Password Input */}
@@ -93,17 +91,16 @@ const LoginPage: React.FC = () => {
               <label
                 htmlFor="password"
                 className="block text-sm font-medium text-white mb-2"
-              >
-                Password
-              </label>
+              ></label>
               <div className="relative">
                 <input
                   id="password"
                   name="password"
                   type={showPassword ? "text" : "password"}
                   required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   className="w-full px-4 py-3 bg-transparent border border-white rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent transition-all duration-200"
                   placeholder="Enter your password"
                 />
@@ -149,23 +146,18 @@ const LoginPage: React.FC = () => {
                   )}
                 </button>
               </div>
+              {formik.touched.password && formik.errors.password && (
+                <p className="text-red-400 text-sm mt-1">
+                  {formik.errors.password}
+                </p>
+              )}
             </div>
-          </div>
-
-          {/* Remember Me & Forgot Password */}
-          <div className="flex items-center justify-between">
-            {/* <div className="text-sm">
-              <a href="#" className="text-white hover:text-gray-300 transition-colors">
-                Forgot your password?
-              </a>
-            </div> */}
           </div>
 
           {/* Submit Button */}
           <div>
             <button
-              type="button"
-              onClick={handleSubmit}
+              type="submit"
               disabled={isLoading}
               className="group relative w-full flex justify-center py-3 px-4 border border-white rounded-lg text-sm font-medium text-black bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
@@ -217,7 +209,7 @@ const LoginPage: React.FC = () => {
               </a>
             </p>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );
