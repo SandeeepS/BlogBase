@@ -8,10 +8,12 @@ import UserLoggedIn from "./middleware/User/UserLoggedIn";
 import UserLoggedOut from "./middleware/User/UserLoggedOut";
 import PageNotFound from "./pages/common/PageNotFound";
 import UserLayout from "./pages/user/UserLayout";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <>
+    <Toaster position="top-center" reverseOrder={false} />
       <Routes>
         <Route path="" element={<UserLoggedOut />}>
           <Route path="/login" element={<LoginPage />} />

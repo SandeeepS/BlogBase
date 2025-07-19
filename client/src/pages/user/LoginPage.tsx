@@ -26,13 +26,14 @@ const LoginPage: React.FC = () => {
         console.log("response from the backend is ", response);
         if (
           response.data.status === "success" &&
-          response.data.data.loginResponse !== null
+          response.data.data.loginResponse.data !== null
         ) {
           dispatch(setUserCredential(response.data.data.loginResponse.data));
-          localStorage.setItem('token',response.data.data.loginResponse.token)
+          localStorage.setItem("token", response.data.data.loginResponse.token);
           navigate("/homepage");
         } else {
-          toast.error("Login failed!!");
+          console.log("login failed ");
+          toast.error("Email or Password is incorrect!!");
         }
       } catch (error) {
         console.log("error while login user in the login page", error);

@@ -17,6 +17,12 @@ export interface IUserLoginData{
     password:string;
 }
 
+export interface IisEmailExist{
+    email :string;
+}
+
+
+
 export interface INewDetails {
   name: string;
   password: string;

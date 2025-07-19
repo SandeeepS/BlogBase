@@ -29,4 +29,14 @@ export class BaseRepository<T> implements IBaseRepository<T> {
         throw error;
     }
   }
+
+    async findOne(filter: Partial<T>): Promise<T | null> {
+    try {
+      console.log("filter is from BaseRepositoy is ", filter);
+      return (await this._model.findOne(filter)) as T;
+    } catch (error) {
+      console.log("Error in BaseRepository findOne:", error as Error);
+      throw error;
+    }
+  }
 }

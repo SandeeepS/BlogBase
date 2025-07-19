@@ -1,5 +1,10 @@
-
-import { IUserLoginData, IUserLoginResponse, IUserSignupData, IUserSignupDataResponse } from "../dataContracts/user/IRepositoryContracts";
+import {
+  IisEmailExist,
+  IUserLoginData,
+  IUserLoginResponse,
+  IUserSignupData,
+  IUserSignupDataResponse,
+} from "../dataContracts/user/IRepositoryContracts";
 import { IRepository } from "../interfaces/IUser/IRepository";
 import { UserInterface } from "../interfaces/Model/IUser";
 import userModel from "../model/userModel";
@@ -40,17 +45,17 @@ export class UserRepository
   ): Promise<IUserLoginResponse | null> {
     try {
       const { email } = userLoginData;
-      const  query = { email: email };
+      const query = { email: email };
       const response = await this.find(query);
       if (!response) {
         return null;
       }
-      const { _id, name, email: userEmail,password } = response;
+      const { _id, name, email: userEmail, password } = response;
       const userLoginResponse: IUserLoginResponse = {
         id: _id.toString(),
         name,
         email: userEmail,
-        password
+        password,
       };
       console.log(
         "Userd details fetched in hte userRepository while login",
@@ -60,6 +65,25 @@ export class UserRepository
     } catch (error) {
       console.log(
         "Error occured while login in the loging funtion in the userRepository.ts"
+      );
+      throw error;
+    }
+  }
+
+  //function to check the user email is exist or not
+  async isEmailExist(data: IisEmailExist): Promise<boolean> {
+    try {
+      const { email } = data;
+      console.log("email find in userRepsoi", email);
+      const response = await this.findOne({ email: email });
+      if (response) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.log(
+        "error occured in the isEmailExit function in userRepository"
       );
       throw error;
     }

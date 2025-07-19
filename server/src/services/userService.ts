@@ -2,7 +2,7 @@ import Cryptr from "cryptr";
 
 import { IRepository } from "../interfaces/IUser/IRepository";
 import { IUserServices } from "../interfaces/IUser/IServices";
-import { LoginValidation } from "../utils/validator";
+import { LoginValidation, SignUpValidation } from "../utils/validator";
 import { IEncrypt } from "../utils/encrypt";
 import { ICreateJWT } from "../utils/generateTokens";
 import {
@@ -24,12 +24,25 @@ class UserService implements IUserServices {
   ): Promise<IUserSignupDataResponse | null> {
     try {
       const { name, password, email, phone, confirmPassword } = userSignUpData;
+      const isValidUserSingupData = SignUpValidation(name,phone.toString(),email,password,confirmPassword);
+      
+      if(!isValidUserSingupData){
+        throw new Error("Invalid User Data!!");
+      }
+
       const secret_key: string | undefined = process.env.CRYPTR_SECRET;
       if (!secret_key) {
         throw new Error(
           "Encrption secret key is not defined in the environment"
         );
       }
+     
+      const isUserExist = await this._userRepository.isEmailExist({email});
+      if(isUserExist){
+        throw new Error("Email already exist");
+      }
+
+      
 
       const cryptr = new Cryptr(secret_key, {
         encoding: "base64",

@@ -65,6 +65,12 @@ class userController implements IUserController {
           token: response.token,
         };
         res.status(200).json(createSuccessResponse({ loginResponse }));
+      } else {
+        const loginResponse: userLoginResponseDTO = {
+          data: null,
+          token: null,
+        };
+        res.status(200).json(createSuccessResponse({loginResponse}));
       }
     } catch (error) {
       console.log("error occured while login the user in the userController");

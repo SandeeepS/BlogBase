@@ -19,8 +19,8 @@ export interface UserSingupResponseDTO{
 }
 
 export interface userLoginResponseDTO {
-   data:IFilteredData,
-    token:string;
+   data:IFilteredData | null,
+    token:string | null;
 }
 
 
