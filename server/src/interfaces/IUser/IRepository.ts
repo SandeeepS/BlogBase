@@ -1,4 +1,4 @@
-import { IUserLoginData, IUserLoginResponse, IUserSignupData, IUserSignupDataResponse } from "../../dataContracts/user/IUserDataContracts";
+import { IUserLoginData, IUserLoginResponse, IUserSignupData, IUserSignupDataResponse } from "../../dataContracts/user/IRepositoryContracts"
 
 export interface IRepository {
 

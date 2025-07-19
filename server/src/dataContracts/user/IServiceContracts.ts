@@ -9,7 +9,7 @@ export interface IUserSignupData {
 export interface IUserSignupDataResponse{
     name:string;
     email:string;
-    phone:Number;
+    phone:number;
 }
 
 export interface IUserLoginData{
@@ -17,9 +17,26 @@ export interface IUserLoginData{
     password:string;
 }
 
+export interface INewDetails {
+  name: string;
+  password: string;
+  email: string;
+  phone: number ;
+  confirmPassword:string;
+}
+
+
 export interface IUserLoginResponse{
+    data:IFilteredData,
+    token:string;
+}
+
+export interface IFilteredData {
     id:string;
     name:string;
     email:string;
 }
+
+
+
 

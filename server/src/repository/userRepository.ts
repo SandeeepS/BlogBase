@@ -1,9 +1,5 @@
-import {
-  IUserLoginData,
-  IUserLoginResponse,
-  IUserSignupData,
-  IUserSignupDataResponse,
-} from "../dataContracts/user/IUserDataContracts";
+
+import { IUserLoginData, IUserLoginResponse, IUserSignupData, IUserSignupDataResponse } from "../dataContracts/user/IRepositoryContracts";
 import { IRepository } from "../interfaces/IUser/IRepository";
 import { UserInterface } from "../interfaces/Model/IUser";
 import userModel from "../model/userModel";
@@ -44,16 +40,17 @@ export class UserRepository
   ): Promise<IUserLoginResponse | null> {
     try {
       const { email } = userLoginData;
-      let query = { email: email };
+      const  query = { email: email };
       const response = await this.find(query);
       if (!response) {
         return null;
       }
-      const { _id, name, email: userEmail } = response;
+      const { _id, name, email: userEmail,password } = response;
       const userLoginResponse: IUserLoginResponse = {
         id: _id.toString(),
         name,
         email: userEmail,
+        password
       };
       console.log(
         "Userd details fetched in hte userRepository while login",
