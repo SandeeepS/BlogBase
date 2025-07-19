@@ -7,6 +7,7 @@ import CreatePost from "./pages/user/CreatePost";
 import UserLoggedIn from "./middleware/User/UserLoggedIn";
 import UserLoggedOut from "./middleware/User/UserLoggedOut";
 import PageNotFound from "./pages/common/PageNotFound";
+import UserLayout from "./pages/user/UserLayout";
 
 function App() {
   return (
@@ -18,8 +19,11 @@ function App() {
         </Route>
 
         <Route path="/" element={<UserLoggedIn />}>
-          <Route path="user/homepage" element={<HomePage />} />
+        <Route path="/" element={<UserLayout/>}>
+           <Route path="user/homepage" element={<HomePage />} />
           <Route path="user/createpost" element={<CreatePost />} />
+        </Route>
+       
         </Route>
         <Route path={"*"} element={<PageNotFound/>} />
       </Routes>

@@ -109,12 +109,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#121212]">
-      <Header
-        isLoggedIn={isLoggedIn}
-        setIsLoggedIn={setIsLoggedIn}
-        showDropdown={showDropdown}
-        setShowDropdown={setShowDropdown}
-      />
+   
 
       {!isLoggedIn && (
         <section className="bg-[#121212] py-20">
