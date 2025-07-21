@@ -2,7 +2,7 @@ import { IisEmailExist, IUserLoginData, IUserLoginResponse, IUserSignupData, IUs
 
 export interface IRepository {
 
-    signup(userSignUpData: IUserSignupData): Promise<IUserSignupDataResponse> 
+    signup(userSignUpData: IUserSignupData): Promise<IUserSignupDataResponse | null> 
     login(userLoginData:IUserLoginData):Promise<IUserLoginResponse | null>
     isEmailExist(data: IisEmailExist): Promise<boolean>
     

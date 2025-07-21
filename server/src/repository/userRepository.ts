@@ -3,7 +3,7 @@ import {
   IUserLoginData,
   IUserLoginResponse,
   IUserSignupData,
-  IUserSignupDataResponse,
+  IUserSignupResponse,
 } from "../dataContracts/user/IRepositoryContracts";
 import { IRepository } from "../interfaces/IUser/IRepository";
 import { UserInterface } from "../interfaces/Model/IUser";
@@ -19,17 +19,12 @@ export class UserRepository
   }
   async signup(
     userSignUpData: IUserSignupData
-  ): Promise<IUserSignupDataResponse> {
+  ): Promise<IUserSignupResponse | null> {
     try {
       console.log("Reached in the UserRepository for userSignup");
       console.log("UserDetails in the userRepository ", userSignUpData);
       const response = await this.save(userSignUpData);
-      if (response) {
-        console.log("userData saved sucessfully", response);
-      } else {
-        console.log("Failed to save the userData");
-      }
-      return userSignUpData;
+      return response;
     } catch (error) {
       console.log(
         "Error occured in the userRepository in the signup function",
@@ -50,18 +45,7 @@ export class UserRepository
       if (!response) {
         return null;
       }
-      const { _id, name, email: userEmail, password } = response;
-      const userLoginResponse: IUserLoginResponse = {
-        id: _id.toString(),
-        name,
-        email: userEmail,
-        password,
-      };
-      console.log(
-        "Userd details fetched in hte userRepository while login",
-        response
-      );
-      return userLoginResponse;
+      return response;
     } catch (error) {
       console.log(
         "Error occured while login in the loging funtion in the userRepository.ts"

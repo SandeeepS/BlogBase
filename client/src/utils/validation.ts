@@ -15,21 +15,37 @@ export const LoginValidation = Yup.object({
 });
 
 export const SignupValidation = Yup.object({
-  name: Yup.string().min(3).required("Please Enter name"),
+  name: Yup.string()
+    .trim()
+    .min(3, "Name must be at least 3 characters")
+    .test("no-only-spaces", "Name cannot be just spaces", (val) => !!val?.trim())
+    .required("Please Enter name"),
+
   email: Yup.string()
+    .trim()
     .matches(gmailRegex, "Please enter a valid Email")
     .email("Please Enter Valid Email")
-    .required("please Enter Email"),
+    .test("no-only-spaces", "Email cannot be just spaces", (val) => !!val?.trim())
+    .required("Please Enter Email"),
+
   phone: Yup.string()
+    .trim()
     .matches(MOBILE_NUM_REGEX, "Enter a valid Phone number")
-    .min(10)
-    .max(10)
+    .min(10, "Phone number must be 10 digits")
+    .max(10, "Phone number must be 10 digits")
+    .test("no-only-spaces", "Phone number cannot be just spaces", (val) => !!val?.trim())
     .required("Please Enter Phone number"),
+
   password: Yup.string()
+    .trim()
     .matches(strongRegex, "Enter a Strong password")
-    .min(5,"Password must be at least 5 characters")
-    .required("please Enter password!"),
-  cpassword: Yup.string()
+    .min(5, "Password must be at least 5 characters")
+    .test("no-only-spaces", "Password cannot be just spaces", (val) => !!val?.trim())
+    .required("Please Enter password!"),
+
+  confirmPassword: Yup.string()
+    .trim()
     .oneOf([Yup.ref("password")], "Password not matching")
-    .required("please Enter the confirm password!"),
+    .test("no-only-spaces", "Confirm password cannot be just spaces", (val) => !!val?.trim())
+    .required("Please Enter the confirm password!"),
 });

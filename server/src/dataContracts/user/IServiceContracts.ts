@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 export interface IUserSignupData {
     name:string;
     email:string;
@@ -6,10 +8,20 @@ export interface IUserSignupData {
     confirmPassword:string;
 }
 
+export interface IUserSingupResponse{
+    success:boolean;
+    message:string;
+    data?:IUserSignupDataResponse | null;
+    token?:string;
+}
+
 export interface IUserSignupDataResponse{
+    _id:mongoose.Types.ObjectId
     name:string;
     email:string;
     phone:number;
+    password:string;
+   
 }
 
 export interface IUserLoginData{
@@ -26,17 +38,21 @@ export interface INewDetails {
 }
 
 
-export interface IUserLoginResponse{
-    data:IFilteredData,
-    token:string;
-}
 
-export interface IFilteredData {
-    id:string;
+export interface  IUserLoginDataResponse {
+      _id:mongoose.Types.ObjectId
     name:string;
     email:string;
+    phone:number;
+    password:string;
 }
 
+export interface IUserLoginResponse{
+    success:boolean;
+    message:string;
+    data?: IUserLoginDataResponse | null;
+    token?:string;
+}
 
 
 

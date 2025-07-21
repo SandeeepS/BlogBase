@@ -4,7 +4,7 @@ export const createSuccessResponse = <T>(
   data: T,
   message?: string
 ): ResponseModel<T> => ({
-  status: "success",
+  success: true,
   data,
   message,
 });
@@ -13,7 +13,7 @@ export const createErrorResponse = (
   error: string,
   message?: string
 ): ResponseModel<null> => ({
-  status: "error",
+  success: false,
   error,
   message,
 });

@@ -25,8 +25,8 @@ const LoginPage: React.FC = () => {
         const response = await login(values.email, values.password);
         console.log("response from the backend is ", response);
         if (
-          response.data.status === "success" &&
-          response.data.data.loginResponse.data !== null
+          response.data.success &&
+          response.data.data.loginResponse !== null
         ) {
           dispatch(setUserCredential(response.data.data.loginResponse.data));
           localStorage.setItem("token", response.data.data.loginResponse.token);

@@ -1,5 +1,5 @@
 export interface ResponseModel<T> {
-    status: 'success' | 'error';
+    success: boolean;
     data?: T;
     message?: string;
     error?: string;

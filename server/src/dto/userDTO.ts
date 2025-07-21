@@ -1,32 +1,34 @@
 export interface UserSingupDTO {
-    name:string;
-    email:string;
-    phone:number;
-    password:string;
-    confirmPassword:string;
+  name: string;
+  email: string;
+  phone: number;
+  password: string;
+  confirmPassword: string;
 }
 
 export interface UserLoginDTO {
-    email:string;
-    password:string;
+  email: string;
+  password: string;
 }
 
-export interface UserSingupResponseDTO{
-    id:string;
-    name:string;
-    email:string;
-    token:string;
+export interface UserSingupResponseDTO {
+  id: string;
+  name: string;
+  email: string;
+  token: string;
 }
 
 export interface userLoginResponseDTO {
-   data:IFilteredData | null,
-    token:string | null;
+  data: {
+    id: string;
+    name: string;
+    email: string;
+  };
+  token: string;
 }
 
-
-
 export interface IFilteredData {
-    id:string;
-    name:string;
-    email:string;
+  id: string;
+  name: string;
+  email: string;
 }

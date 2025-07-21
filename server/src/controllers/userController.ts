@@ -2,12 +2,12 @@ import { NextFunction, Request, Response } from "express";
 import { IUserController } from "../interfaces/IUser/IController";
 import { IUserServices } from "../interfaces/IUser/IServices";
 import { createSuccessResponse } from "../helpers/responseHelper";
+import { UserLoginDTO, UserSingupDTO } from "../dto/userDTO";
 import {
-  UserLoginDTO,
-  userLoginResponseDTO,
-  UserSingupDTO,
-  UserSingupResponseDTO,
-} from "../dto/userDTO";
+  mapToLoginResponseDTO,
+  mapToSignupResponseDTO,
+} from "../mappers/userMapper";
+import { UserInterface } from "../interfaces/Model/IUser";
 
 class userController implements IUserController {
   constructor(private _userService: IUserServices) {}
@@ -17,16 +17,6 @@ class userController implements IUserController {
       console.log(req.body);
       const { name, email, password, phone, confirmPassword }: UserSingupDTO =
         req.body;
-      console.log(
-        "data from the req.body is ",
-        name,
-        " ",
-        email,
-        " ",
-        password,
-        " ",
-        confirmPassword
-      );
       const response = await this._userService.signup({
         name,
         email,
@@ -34,13 +24,17 @@ class userController implements IUserController {
         password,
         confirmPassword,
       });
-      const sigupResponse: UserSingupResponseDTO = {
-        id: response.id,
-        name: response.name,
-        email: response.email,
-        token: "sdfsdfsdfsd",
-      };
-      res.status(200).json(createSuccessResponse({ sigupResponse }));
+
+      if (response && response.data) {
+        const signupResponse = mapToSignupResponseDTO(
+          response.data as UserInterface,
+          response.token as string
+        );
+        res.status(200).json(createSuccessResponse({ signupResponse }));
+      } else {
+        const signupResponse = null;
+        res.status(200).json(createSuccessResponse(signupResponse));
+      }
     } catch (error) {
       console.log(
         "error occured in the singup function in the userController",
@@ -55,22 +49,15 @@ class userController implements IUserController {
       const { email, password }: UserLoginDTO = req.body;
       console.log("email and password from the req.body is ", email, password);
       const response = await this._userService.login({ email, password });
-      console.log(
-        "response reached in the user controller with token is",
-        response
-      );
-      if (response) {
-        const loginResponse: userLoginResponseDTO = {
-          data: response.data,
-          token: response.token,
-        };
+      if (response && response.data) {
+        const loginResponse = mapToLoginResponseDTO(
+          response.data as UserInterface,
+          response.token as string
+        );
         res.status(200).json(createSuccessResponse({ loginResponse }));
       } else {
-        const loginResponse: userLoginResponseDTO = {
-          data: null,
-          token: null,
-        };
-        res.status(200).json(createSuccessResponse({loginResponse}));
+        const loginResponse = null;
+        res.status(200).json(createSuccessResponse(loginResponse));
       }
     } catch (error) {
       console.log("error occured while login the user in the userController");

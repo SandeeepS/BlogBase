@@ -10,7 +10,7 @@ import {
   IUserLoginData,
   IUserLoginResponse,
   IUserSignupData,
-  IUserSignupDataResponse,
+  IUserSingupResponse,
 } from "../dataContracts/user/IServiceContracts";
 
 class UserService implements IUserServices {
@@ -21,28 +21,41 @@ class UserService implements IUserServices {
   ) {}
   async signup(
     userSignUpData: IUserSignupData
-  ): Promise<IUserSignupDataResponse | null> {
+  ): Promise<IUserSingupResponse> {
     try {
       const { name, password, email, phone, confirmPassword } = userSignUpData;
-      const isValidUserSingupData = SignUpValidation(name,phone.toString(),email,password,confirmPassword);
-      
-      if(!isValidUserSingupData){
-        throw new Error("Invalid User Data!!");
+      const isValidUserSingupData = SignUpValidation(
+        name,
+        phone.toString(),
+        email,
+        password,
+        confirmPassword
+      );
+
+      if (!isValidUserSingupData) {
+        return {
+          success: false,
+          message: "user details provided is not valid",
+        };
       }
 
       const secret_key: string | undefined = process.env.CRYPTR_SECRET;
       if (!secret_key) {
-        throw new Error(
-          "Encrption secret key is not defined in the environment"
-        );
-      }
-     
-      const isUserExist = await this._userRepository.isEmailExist({email});
-      if(isUserExist){
-        throw new Error("Email already exist");
+        console.log("Sercret is not found in the userService while singup");
+        return {
+          success: false,
+          message: "user details provided is not valid",
+        };
       }
 
-      
+      const isUserExist = await this._userRepository.isEmailExist({ email });
+      if (isUserExist) {
+        console.log("user Already exist");
+        return {
+          success: false,
+          message: "user Already exist",
+        };
+      }
 
       const cryptr = new Cryptr(secret_key, {
         encoding: "base64",
@@ -59,8 +72,14 @@ class UserService implements IUserServices {
       };
 
       const response = await this._userRepository.signup(newDetails);
+      const token = this._createJWT.generateToken(response.id);
       console.log(response);
-      return userSignUpData;
+      return {
+        success: true,
+        message: "user singup successfull",
+        data: response,
+        token:token
+      };
     } catch (error) {
       console.log(
         "Error occured in the userService in the signup function",
@@ -70,49 +89,52 @@ class UserService implements IUserServices {
     }
   }
 
+
+
   async login(
     userLoginData: IUserLoginData
-  ): Promise<IUserLoginResponse | null> {
+  ): Promise<IUserLoginResponse>{
     try {
       const { email, password } = userLoginData;
-      const loginValidation = LoginValidation(email, password);
-      if (loginValidation) {
-        const response = await this._userRepository.login(userLoginData);
-        if (response) {
-          const encrypedPassword = response.password;
-          console.log("password from the response is ", encrypedPassword);
-          const isPasswordMatch = await this._encrypt.compare(
-            password,
-            encrypedPassword
-          );
-          if (isPasswordMatch) {
-            const userId = response.id;
-            const token = this._createJWT.generateToken(userId);
-            const filteredData = {
-              id: response.id,
-              name: response.name,
-              email: response.email,
-            };
-            const responseData = {
-              data: filteredData,
-              token: token,
-            };
-            return responseData;
-          }
-        } else {
-          return null;
-        }
-        return null;
-      } else {
-        return null;
+
+      const isValid = LoginValidation(email, password);
+      if (!isValid) {
+        return {
+          success: false,
+          message: "Invalid login credentials",
+        };
       }
-    } catch (error) {
-      console.log(
-        "Error occured while login in the loging funtion in the userService.ts"
+
+      const response = await this._userRepository.login(userLoginData);
+      if (!response) {
+        return {
+          success: false,
+          message: "User not found",
+        };
+      }
+
+      const isPasswordMatch = await this._encrypt.compare(
+        password,
+        response.password
       );
+      if (!isPasswordMatch) {
+        return {
+          success: false,
+          message: "Incorrect password",
+        };
+      }
+
+      const token = this._createJWT.generateToken(response._id.toString());
+      return {
+        success: true,
+        message: "Login successful",
+        data: response,
+        token,
+      };
+    } catch (error) {
+      console.log("Error in login:", error);
       throw error;
     }
   }
 }
-
 export default UserService;
