@@ -111,7 +111,7 @@ const Header: React.FC = () => {
                   {showDropdown && (
                     <div className="absolute right-0 mt-2 w-48 bg-[#1a1a1a] border border-gray-700 rounded-lg shadow-lg py-1">
                       <a
-                        href="#"
+                        href="/myposts"
                         className="block px-4 py-2 text-sm text-white hover:bg-gray-700"
                       >
                         Your Posts

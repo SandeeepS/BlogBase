@@ -20,6 +20,9 @@ userRouter.post("/signup",async(req:Request,res:Response,next:NextFunction) => a
 userRouter.post("/login",async(req:Request,res:Response,next:NextFunction) => await controller.login(req,res,next));
 userRouter.post("/createPost",async(req:Request,res:Response,next:NextFunction) => await controller.createPost(req,res,next));
 userRouter.get("/allPosts",async(req:Request,res:Response,next:NextFunction) => await controller.getAllPosts(req,res,next));
+userRouter.get("/postByUserId",async(req:Request,res:Response,next:NextFunction) => await controller.getPostsByUserId(req,res,next));
+userRouter.get("/postByBlogId",async(req:Request,res:Response,next:NextFunction) => await controller.getPostByBlogId(req,res,next));
+userRouter.put("/updatePost",async(req:Request,res:Response,next:NextFunction) => await controller.updatePost(req,res,next));
 
 
 export default userRouter

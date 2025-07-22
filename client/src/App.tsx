@@ -9,6 +9,8 @@ import UserLoggedOut from "./middleware/User/UserLoggedOut";
 import PageNotFound from "./pages/common/PageNotFound";
 // import UserLayout from "./pages/user/UserLayout";
 import { Toaster } from "react-hot-toast";
+import UserPosts from "./pages/user/UserPosts";
+import EditPost from "./pages/user/EditPost";
 
 function App() {
   return (
@@ -23,11 +25,13 @@ function App() {
 
         <Route path="/" element={<UserLoggedIn />}>
           {/* <Route path="/" element={<UserLayout />}> */}
-            <Route path="user/homepage" element={<HomePage />} />
-            <Route path="/createpost" element={<CreatePost />} />
+          <Route path="user/homepage" element={<HomePage />} />
+          <Route path="/createpost" element={<CreatePost />} />
+          <Route path="/myposts" element={<UserPosts />} />
+          <Route path="/editPost/:blogId" element={<EditPost />} />
           {/* </Route> */}
         </Route>
-        <Route path={"*"} element={<PageNotFound/>}/>
+        <Route path={"*"} element={<PageNotFound />} />
       </Routes>
     </>
   );

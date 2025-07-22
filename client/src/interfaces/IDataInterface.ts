@@ -4,3 +4,9 @@ export interface ICreatePost {
     image:string;
     userId:string;
 }
+
+export interface IUpdateData{
+    title:string;
+    description:string;
+    image:string;
+}

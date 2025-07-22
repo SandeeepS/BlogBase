@@ -9,7 +9,13 @@ import {
   ICreatePostData,
   ICreatePostDataResponse,
   IGetAllBlogsResponse,
+  IGetPostsByBlogId,
+  IGetPostsByBlogIdResponse,
+  IGetPostsByUserId,
+  IGetPostsByUserIdResponse,
   INewDetails,
+  IUpadatePostData,
+  IUpdatePostResponse,
   IUserLoginData,
   IUserLoginResponse,
   IUserSignupData,
@@ -175,23 +181,104 @@ class UserService implements IUserServices {
     try {
       const response = await this._blogRepository.getAllPosts();
       console.log(response);
-      if(response){
+      if (response) {
         return {
-          success:true,
-          message:"data fetched successfully",
-          data:response
-        }
-      }else{
-    return {
-        success: false,
-        message: "data feching failed ",
-        data: null,
-      };
+          success: true,
+          message: "data fetched successfully",
+          data: response,
+        };
+      } else {
+        return {
+          success: false,
+          message: "data feching failed ",
+          data: null,
+        };
       }
-  
     } catch (error) {
       console.log(
         "error occured while creating post in the userService creatpost funciton ",
+        error
+      );
+      throw error;
+    }
+  }
+
+  async getPostsByUserId(
+    data: IGetPostsByUserId
+  ): Promise<IGetPostsByUserIdResponse> {
+    try {
+      const response = await this._blogRepository.getPostsByUserId(data);
+      console.log(response);
+      if (response) {
+        return {
+          success: true,
+          message: "data fetched successfully",
+          data: response,
+        };
+      } else {
+        return {
+          success: false,
+          message: "data feching failed ",
+          data: null,
+        };
+      }
+    } catch (error) {
+      console.log(
+        "error occured while getting the user posts by id  in the userService getPostsByUserId funciton ",
+        error
+      );
+      throw error;
+    }
+  }
+
+  async getPostsByBlogId(
+    data: IGetPostsByBlogId
+  ): Promise<IGetPostsByBlogIdResponse> {
+    try {
+      const response = await this._blogRepository.getPostsByBlogId(data);
+      console.log(response);
+      if (response) {
+        return {
+          success: true,
+          message: "data fetched successfully",
+          data: response,
+        };
+      } else {
+        return {
+          success: false,
+          message: "data feching failed ",
+          data: null,
+        };
+      }
+    } catch (error) {
+      console.log(
+        "error occured while getting the user posts by id  in the userService getPostsByUserId funciton ",
+        error
+      );
+      throw error;
+    }
+  }
+
+  async updatePost(data: IUpadatePostData): Promise<IUpdatePostResponse> {
+    try {
+      const response = await this._blogRepository.updatePost(data);
+      console.log(response);
+      if (response) {
+        return {
+          success: true,
+          message: "data fetched successfully",
+          data: response,
+        };
+      } else {
+        return {
+          success: false,
+          message: "data feching failed ",
+          data: null,
+        };
+      }
+    } catch (error) {
+      console.log(
+        "error occured while updating  the user posts by id  in the userService updatePost funciton ",
         error
       );
       throw error;
