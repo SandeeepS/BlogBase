@@ -10,6 +10,10 @@ const blogSchema: Schema<BlogInterface> = new Schema({
     type: String,
     required: true,
   },
+  image:{
+    type:String,
+    required:true,
+  }
 });
 
 const blogModel: Model<BlogInterface> = mongoose.model<BlogInterface>(

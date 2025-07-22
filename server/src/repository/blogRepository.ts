@@ -20,7 +20,7 @@ export class BlogRepository
   ): Promise<ICreatePostDateResponse | null> {
     try {
       console.log(data);
-      const query = { title: data.title, description: data.description };
+      const query = { title: data.title, description: data.description,image:data.image };
       const response = await this.save(query);
       console.log("response after adding blog in the data base ", response);
       return response;

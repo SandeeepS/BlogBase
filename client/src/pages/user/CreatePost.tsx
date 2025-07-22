@@ -6,9 +6,10 @@ import { createPost } from "../../api/user";
 import type { ICreatePost } from "../../interfaces/IDataInterface";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { uploadImageToCloudinary } from "../../utils/cloudinaryUpload";
 
 const CreatePost: React.FC = () => {
-  // const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -16,23 +17,28 @@ const CreatePost: React.FC = () => {
     initialValues: {
       title: "",
       description: "",
-      // image: null as File | null,
+      image: null as File | null,
     },
     validationSchema: CreatePostValidation,
     onSubmit: async (values) => {
       try {
         setIsLoading(true);
-        // const formData = new FormData();
-        // formData.append("title", values.title);
-        // formData.append("description", values.description);
-        // if (values.image) formData.append("image", values.image);
 
-        // await new Promise((res) => setTimeout(res, 1500));
-        console.log("Form values submitted:", values);
+        let imageUrl: string | null = null;
+        if (values.image) {
+          imageUrl = await uploadImageToCloudinary(values.image);
+        }
+        if (!imageUrl) {
+          toast.error("Image upload Failed");
+          return;
+        }
+
         const data: ICreatePost = {
           title: values.title,
           description: values.description,
+          image: imageUrl,
         };
+
         const response = await createPost(data);
         console.log(response);
         if (response.data.success && response.data.data) {
@@ -50,13 +56,13 @@ const CreatePost: React.FC = () => {
     },
   });
 
-  // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = e.currentTarget.files?.[0];
-  //   if (file) {
-  //     formik.setFieldValue("image", file);
-  //     setImagePreview(URL.createObjectURL(file));
-  //   }
-  // };
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.currentTarget.files?.[0];
+    if (file) {
+      formik.setFieldValue("image", file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
 
   return (
     <div className="bg-[#121212] min-h-screen">
@@ -108,7 +114,7 @@ const CreatePost: React.FC = () => {
           </div>
 
           {/* Image File Input */}
-          {/* <div>
+          <div>
             <label className="block text-sm font-medium text-gray-300 mb-1">
               Upload Image
             </label>
@@ -127,8 +133,8 @@ const CreatePost: React.FC = () => {
             )}
           </div>
 
-          {/* Image Preview */}
-          {/* {imagePreview && (
+          {/* Image Preview*/}
+          {imagePreview && (
             <div className="mt-4">
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Image Preview:
@@ -139,7 +145,7 @@ const CreatePost: React.FC = () => {
                 className="w-full h-64 object-cover rounded-lg border border-gray-700"
               />
             </div>
-          )} */}
+          )}
 
           {/* Submit Button */}
           <button

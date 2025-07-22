@@ -31,6 +31,7 @@ export interface IUserLoginData {
 export interface ICreatePostData {
   title: string;
   description: string;
+  image:string;
 }
 
 export interface ICreatePostDataResponse {
@@ -40,6 +41,7 @@ export interface ICreatePostDataResponse {
     _id: mongoose.Types.ObjectId;
     title: string;
     description: string;
+    image:string;
   } | null;
 }
 

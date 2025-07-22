@@ -90,14 +90,14 @@ export const CreatePostValidation = Yup.object({
       (value) => !!value && value.trim().length > 0
     ),
 
-  // image: Yup.mixed()
-  //   .required("Image is required")
-  //   .test("fileType", "Unsupported File Format", (value) => {
-  //     if (value && typeof value === "object" && "type" in value) {
-  //       return ["image/jpeg", "image/png", "image/webp"].includes(
-  //         (value as File).type
-  //       );
-  //     }
-  //     return false;
-  //   }),
+  image: Yup.mixed()
+    .required("Image is required")
+    .test("fileType", "Unsupported File Format", (value) => {
+      if (value && typeof value === "object" && "type" in value){
+        return ["image/jpeg", "image/png", "image/webp"].includes(
+          (value as File).type
+        );
+      }
+      return false;
+    }),
 });

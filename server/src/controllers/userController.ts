@@ -11,7 +11,6 @@ import {
   mapToSignupResponseDTO,
 } from "../mappers/userMapper";
 import { UserInterface } from "../interfaces/Model/IUser";
-import { error } from "console";
 
 class userController implements IUserController {
   constructor(private _userService: IUserServices) {}
@@ -75,15 +74,17 @@ class userController implements IUserController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const { title, description } = req.body;
+      const { title, description ,image} = req.body;
       console.log(
         "title adn description is in controller  ",
         title,
-        description
+        description,
+        image
       );
       const response = await this._userService.createPost({
         title,
         description,
+        image
       });
       if (response.success) {
         res.status(200).json(createSuccessResponse(response));
