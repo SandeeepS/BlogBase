@@ -32,7 +32,7 @@ export interface ICreatePostData {
   title: string;
   description: string;
   image: string;
-  userId:string;
+  userId: string;
 }
 
 export interface ICreatePostDataResponse {
@@ -43,7 +43,7 @@ export interface ICreatePostDataResponse {
     title: string;
     description: string;
     image: string;
-    userId:mongoose.Types.ObjectId;
+    userId: mongoose.Types.ObjectId;
   } | null;
 }
 
@@ -56,8 +56,47 @@ export interface IGetAllBlogsResponse {
         title: string;
         description: string;
         image: string;
+        userId: mongoose.Types.ObjectId;
       }[]
     | null;
+}
+
+export interface IGetPostsByUserIdResponse {
+  success: boolean;
+  message: string;
+  data:
+    | {
+        _id: mongoose.Types.ObjectId;
+        title: string;
+        description: string;
+        image: string;
+        userId: mongoose.Types.ObjectId;
+      }[]
+    | null;
+}
+
+export interface IGetPostsByBlogIdResponse {
+  success: boolean;
+  message: string;
+  data: {
+    _id: mongoose.Types.ObjectId;
+    title: string;
+    description: string;
+    image: string;
+    userId: mongoose.Types.ObjectId;
+  } | null;
+}
+
+export interface IUpdatePostResponse {
+  success: boolean;
+  message: string;
+  data: {
+    _id: mongoose.Types.ObjectId;
+    title: string;
+    description: string;
+    image: string;
+    userId: mongoose.Types.ObjectId;
+  } | null;
 }
 
 export interface INewDetails {
@@ -81,4 +120,21 @@ export interface IUserLoginResponse {
   message: string;
   data?: IUserLoginDataResponse | null;
   token?: string;
+}
+
+export interface IGetPostsByUserId {
+  userId: string;
+}
+
+export interface IGetPostsByBlogId {
+  blogId: string;
+}
+
+export interface IUpadatePostData {
+  blogId: string;
+  updateData: {
+    title: string;
+    description: string;
+    image: string;
+  };
 }

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../app/store";
 import { useDispatch } from "react-redux";
 import { userLogout } from "../app/slices/authSlice";
+import ConfirmModal from "./ConfirmModal"; // <- Import Modal
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -10,23 +11,17 @@ const Header: React.FC = () => {
   const { userData } = useAppSelector((state) => state.auth);
 
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-  const handleCreatePost = () => {
-    navigate("/createPost");
-  };
+  const handleCreatePost = () => navigate("/createPost");
+  const handleLogin = () => navigate("/login");
+  const handleSignup = () => navigate("/signup");
 
-  const handleLogin = () => {
-    navigate("/login");
-  };
-
-  const handleSignup = () => {
-    navigate("/signup");
-  };
-
-  const handleLogout = () => {
+  const handleLogoutConfirmed = () => {
     localStorage.removeItem("token");
     dispatch(userLogout());
     navigate("/login");
+    setShowLogoutModal(false);
   };
 
   return (
@@ -108,17 +103,18 @@ const Header: React.FC = () => {
                       />
                     </svg>
                   </button>
+
                   {showDropdown && (
-                    <div className="absolute right-0 mt-2 w-48 bg-[#1a1a1a] border border-gray-700 rounded-lg shadow-lg py-1">
+                    <div className="absolute right-0 mt-2 w-48 bg-[#1a1a1a] border border-gray-700 rounded-lg shadow-lg py-1 z-40">
                       <a
-                        href="#"
+                        href="/myposts"
                         className="block px-4 py-2 text-sm text-white hover:bg-gray-700"
                       >
                         Your Posts
                       </a>
                       <hr className="border-gray-700 my-1" />
                       <button
-                        onClick={handleLogout}
+                        onClick={() => setShowLogoutModal(true)}
                         className="w-full text-left px-4 py-2 text-sm text-white hover:bg-gray-700"
                       >
                         Sign Out
@@ -131,6 +127,17 @@ const Header: React.FC = () => {
           </nav>
         </div>
       </div>
+
+      {/* 🔒 Logout Confirmation Modal */}
+      <ConfirmModal
+        isOpen={showLogoutModal}
+        title="Confirm Sign Out"
+        message="Are you sure you want to sign out?"
+        confirmText="Sign Out"
+        cancelText="Cancel"
+        onConfirm={handleLogoutConfirmed}
+        onCancel={() => setShowLogoutModal(false)}
+      />
     </header>
   );
 };

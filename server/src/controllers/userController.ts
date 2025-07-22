@@ -74,7 +74,7 @@ class userController implements IUserController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const { title, description ,image, userId} = req.body;
+      const { title, description, image, userId } = req.body;
       console.log(
         "title adn description is in controller  ",
         title,
@@ -86,7 +86,7 @@ class userController implements IUserController {
         title,
         description,
         image,
-        userId
+        userId,
       });
       if (response.success) {
         res.status(200).json(createSuccessResponse(response));
@@ -101,16 +101,97 @@ class userController implements IUserController {
     }
   }
 
-  async getAllPosts (req:Request,res:Response,next:NextFunction) :Promise<void>{
-    try{
+  async getAllPosts(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
       const response = await this._userService.getAllPosts();
-      if(response.success){
-        res.status(200).json(createSuccessResponse(response.data))
-      }else{
-        res.status(200).json(createErrorResponse("false","fetching blogs failed "));
+      if (response.success) {
+        res.status(200).json(createSuccessResponse(response.data));
+      } else {
+        res
+          .status(200)
+          .json(createErrorResponse("false", "fetching blogs failed "));
       }
-    }catch(error){
-      console.log("error occured while getting all posts ",error);
+    } catch (error) {
+      console.log("error occured while getting all posts ", error);
+      next(error);
+    }
+  }
+
+  async getPostsByUserId(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      let { userId } = req.query;
+      console.log("user id is ", userId);
+      if (userId) {
+        userId = userId.toString();
+        const response = await this._userService.getPostsByUserId({ userId });
+        res.status(200).json(createSuccessResponse(response));
+      } else {
+        res
+          .status(200)
+          .json(createErrorResponse("false", "userId is not found"));
+      }
+    } catch (error) {
+      console.log(
+        "error occured while gettin the user posts by id in the usercontroller ",
+        error
+      );
+      next(error);
+    }
+  }
+
+  async getPostByBlogId(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      let { blogId } = req.query;
+      console.log("blog id is ", blogId);
+      if (blogId) {
+        blogId = blogId.toString();
+        const response = await this._userService.getPostsByBlogId({ blogId });
+        res.status(200).json(createSuccessResponse(response));
+      } else {
+        res
+          .status(200)
+          .json(createErrorResponse("false", "userId is not found"));
+      }
+    } catch (error) {
+      console.log(
+        "error occured while gettin the user posts by blogid  in the usercontroller in the getPostByBlogId ",
+        error
+      );
+      next(error);
+    }
+  }
+
+  async updatePost(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { blogId, updateData } = req.body;
+      console.log("blog id is ", blogId, updateData);
+      const response = await this._userService.updatePost({blogId,updateData});
+      if(response.success){
+        res.status(200).json(createSuccessResponse(response));
+      }else{
+        res.status(200).json(createErrorResponse("false","failed to update the blog"));
+      }
+    } catch (error) {
+      console.log(
+        "error occured while updating  the user posts by blogid  in the usercontroller in the updatePost",
+        error
+      );
       next(error);
     }
   }

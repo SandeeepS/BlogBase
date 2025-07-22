@@ -2,7 +2,10 @@ const userRoutes = {
    login:"user/login",
    signup:"user/signup",
    createPost:"user/createPost",
-   getAllPosts:"user/allPosts"
+   getAllPosts:"user/allPosts",
+   getPostByUserId:"/user/postByUserId",
+   getPostByBlogId:"/user/postByBlogId",
+   updatePost:"/user/updatePost",
 
 }
 
