@@ -1,13 +1,17 @@
 import { NextFunction, Request, Response } from "express";
 import { IUserController } from "../interfaces/IUser/IController";
 import { IUserServices } from "../interfaces/IUser/IServices";
-import { createSuccessResponse } from "../helpers/responseHelper";
+import {
+  createErrorResponse,
+  createSuccessResponse,
+} from "../helpers/responseHelper";
 import { UserLoginDTO, UserSingupDTO } from "../dto/userDTO";
 import {
   mapToLoginResponseDTO,
   mapToSignupResponseDTO,
 } from "../mappers/userMapper";
 import { UserInterface } from "../interfaces/Model/IUser";
+import { error } from "console";
 
 class userController implements IUserController {
   constructor(private _userService: IUserServices) {}
@@ -58,6 +62,35 @@ class userController implements IUserController {
       } else {
         const loginResponse = null;
         res.status(200).json(createSuccessResponse(loginResponse));
+      }
+    } catch (error) {
+      console.log("error occured while login the user in the userController");
+      next(error);
+    }
+  }
+
+  async createPost(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { title, description } = req.body;
+      console.log(
+        "title adn description is in controller  ",
+        title,
+        description
+      );
+      const response = await this._userService.createPost({
+        title,
+        description,
+      });
+      if (response.success) {
+        res.status(200).json(createSuccessResponse(response));
+      } else {
+        res
+          .status(200)
+          .json(createErrorResponse("false", "Blog Creation falied "));
       }
     } catch (error) {
       console.log("error occured while login the user in the userController");

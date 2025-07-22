@@ -6,22 +6,24 @@ import { LoginValidation, SignUpValidation } from "../utils/validator";
 import { IEncrypt } from "../utils/encrypt";
 import { ICreateJWT } from "../utils/generateTokens";
 import {
+  ICreatePostData,
+  ICreatePostDataResponse,
   INewDetails,
   IUserLoginData,
   IUserLoginResponse,
   IUserSignupData,
   IUserSingupResponse,
 } from "../dataContracts/user/IServiceContracts";
+import { IBlogs } from "../interfaces/IBlog/IRepository";
 
 class UserService implements IUserServices {
   constructor(
     private _userRepository: IRepository,
     private _encrypt: IEncrypt,
-    private _createJWT: ICreateJWT
+    private _createJWT: ICreateJWT,
+    private _blogRepository: IBlogs
   ) {}
-  async signup(
-    userSignUpData: IUserSignupData
-  ): Promise<IUserSingupResponse> {
+  async signup(userSignUpData: IUserSignupData): Promise<IUserSingupResponse> {
     try {
       const { name, password, email, phone, confirmPassword } = userSignUpData;
       const isValidUserSingupData = SignUpValidation(
@@ -72,14 +74,23 @@ class UserService implements IUserServices {
       };
 
       const response = await this._userRepository.signup(newDetails);
-      const token = this._createJWT.generateToken(response.id);
-      console.log(response);
-      return {
-        success: true,
-        message: "user singup successfull",
-        data: response,
-        token:token
-      };
+      if (response) {
+        const id = response._id.toString();
+        const token = this._createJWT.generateToken(id);
+        console.log(response);
+        return {
+          success: true,
+          message: "user singup successfull",
+          data: response,
+          token: token,
+        };
+      } else {
+        return {
+          success: true,
+          message: "user singup successfull",
+          data: null,
+        };
+      }
     } catch (error) {
       console.log(
         "Error occured in the userService in the signup function",
@@ -89,11 +100,7 @@ class UserService implements IUserServices {
     }
   }
 
-
-
-  async login(
-    userLoginData: IUserLoginData
-  ): Promise<IUserLoginResponse>{
+  async login(userLoginData: IUserLoginData): Promise<IUserLoginResponse> {
     try {
       const { email, password } = userLoginData;
 
@@ -133,6 +140,32 @@ class UserService implements IUserServices {
       };
     } catch (error) {
       console.log("Error in login:", error);
+      throw error;
+    }
+  }
+
+  async createPost(data: ICreatePostData): Promise<ICreatePostDataResponse> {
+    try {
+      console.log(data);
+      const response = await this._blogRepository.createPost(data);
+      if (response) {
+        return {
+          success: true,
+          message: "blog created successfully",
+          data: response,
+        };
+      } else {
+        return {
+          success: true,
+          message: "blog creation failed",
+          data: null,
+        };
+      }
+    } catch (error) {
+      console.log(
+        "error occured while creating post in the userService creatpost funciton ",
+        error
+      );
       throw error;
     }
   }

@@ -40,3 +40,14 @@ export interface IUserLoginResponse {
   email: string;
   phone: number;
 }
+
+export interface ICreatePostData {
+  title: string;
+  description: string;
+}
+
+export interface ICreatePostDataResponse {
+  _id: mongoose.Types.ObjectId;
+  title: string;
+  description: string;
+}

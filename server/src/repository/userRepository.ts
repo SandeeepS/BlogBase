@@ -1,4 +1,6 @@
 import {
+  ICreatePostData,
+  ICreatePostDataResponse,
   IisEmailExist,
   IUserLoginData,
   IUserLoginResponse,
@@ -68,6 +70,20 @@ export class UserRepository
     } catch (error) {
       console.log(
         "error occured in the isEmailExit function in userRepository"
+      );
+      throw error;
+    }
+  }
+
+  async createPost(data: ICreatePostData): Promise<ICreatePostDataResponse | null> {
+    try {
+      console.log(data);
+      // const response = await this.
+      return null;
+    } catch (error) {
+      console.log(
+        "error occured while creating post in the userRepository creatpost funciton ",
+        error
       );
       throw error;
     }

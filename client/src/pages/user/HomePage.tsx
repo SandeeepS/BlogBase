@@ -4,7 +4,7 @@ import Header from "../../components/Header";
 
 const HomePage: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showDropdown, setShowDropdown] = useState(false);
+  // const [showDropdown, setShowDropdown] = useState(false);
   const [visibleBlogs, setVisibleBlogs] = useState(4);
   const [likedPosts, setLikedPosts] = useState<number[]>([]);
 
@@ -109,7 +109,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#121212]">
-   
+   <Header/>
 
       {!isLoggedIn && (
         <section className="bg-[#121212] py-20">
