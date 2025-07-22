@@ -3,7 +3,7 @@ export const uploadImageToCloudinary = async (
 ): Promise<string | null> => {
   const formData = new FormData();
   formData.append("file", image);
-  formData.append("upload_preset", "blogBase"); // replace with actual preset
+  formData.append("upload_preset", "blogBase"); 
   const cloudName = import.meta.env.VITE_CLOUDNAME;
   console.log("cloud name is ", cloudName);
   try {

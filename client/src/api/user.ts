@@ -33,4 +33,15 @@ export const createPost = async(data:ICreatePost) => {
   }
 }
 
+export const getAllPost = async() => {
+  try{
+    const response = await Api.get(userRoutes.getAllPosts);
+    console.log("response in use.ts ");
+    return response;
+  }catch(error){
+    console.log("error occured while fetching all the blogs in the getAllPost",error);
+    throw error;
+  }
+}
+
 

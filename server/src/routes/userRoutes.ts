@@ -19,7 +19,7 @@ const controller = new userController(userService);
 userRouter.post("/signup",async(req:Request,res:Response,next:NextFunction) => await controller.signup(req,res,next));
 userRouter.post("/login",async(req:Request,res:Response,next:NextFunction) => await controller.login(req,res,next));
 userRouter.post("/createPost",async(req:Request,res:Response,next:NextFunction) => await controller.createPost(req,res,next));
-
+userRouter.get("/allPosts",async(req:Request,res:Response,next:NextFunction) => await controller.getAllPosts(req,res,next));
 
 
 export default userRouter

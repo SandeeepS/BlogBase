@@ -1,4 +1,4 @@
-import mongoose, { Model, Schema } from "mongoose";
+import mongoose, { Model, Schema} from "mongoose";
 import { BlogInterface } from "../interfaces/Model/IBlog";
 
 const blogSchema: Schema<BlogInterface> = new Schema({
@@ -12,6 +12,10 @@ const blogSchema: Schema<BlogInterface> = new Schema({
   },
   image:{
     type:String,
+    required:true,
+  },
+  userId:{
+    type: Schema.Types.ObjectId,
     required:true,
   }
 });

@@ -7,12 +7,17 @@ import type { ICreatePost } from "../../interfaces/IDataInterface";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { uploadImageToCloudinary } from "../../utils/cloudinaryUpload";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../app/store";
 
 const CreatePost: React.FC = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const userData = useSelector((state: RootState) => state.auth.userData);
+  const userId = userData?.id;
 
+  console.log("userDAta is ", userData);
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -33,10 +38,16 @@ const CreatePost: React.FC = () => {
           return;
         }
 
+        if (imageUrl == "cloud name is not avaiblle") {
+          toast.error("Image upload Failed")
+          return;
+        }
+
         const data: ICreatePost = {
           title: values.title,
           description: values.description,
           image: imageUrl,
+          userId: userId as string,
         };
 
         const response = await createPost(data);

@@ -74,17 +74,19 @@ class userController implements IUserController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const { title, description ,image} = req.body;
+      const { title, description ,image, userId} = req.body;
       console.log(
         "title adn description is in controller  ",
         title,
         description,
-        image
+        image,
+        userId
       );
       const response = await this._userService.createPost({
         title,
         description,
-        image
+        image,
+        userId
       });
       if (response.success) {
         res.status(200).json(createSuccessResponse(response));
@@ -95,6 +97,20 @@ class userController implements IUserController {
       }
     } catch (error) {
       console.log("error occured while login the user in the userController");
+      next(error);
+    }
+  }
+
+  async getAllPosts (req:Request,res:Response,next:NextFunction) :Promise<void>{
+    try{
+      const response = await this._userService.getAllPosts();
+      if(response.success){
+        res.status(200).json(createSuccessResponse(response.data))
+      }else{
+        res.status(200).json(createErrorResponse("false","fetching blogs failed "));
+      }
+    }catch(error){
+      console.log("error occured while getting all posts ",error);
       next(error);
     }
   }

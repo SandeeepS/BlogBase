@@ -1,101 +1,43 @@
 // pages/HomePage.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
+import { getAllPost } from "../../api/user";
 
 const HomePage: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   // const [showDropdown, setShowDropdown] = useState(false);
-  const [visibleBlogs, setVisibleBlogs] = useState(4);
+  const [visibleBlogs, setVisibleBlogs] = useState(3);
+  type Blog = {
+    id: number;
+    title: string;
+    description: string;
+    image: string;
+    userDetails: {
+      name: string;
+    };
+  };
 
-  const blogData = [
-    {
-      id: 1,
-      title: "The Future of Web Development",
-      description:
-        "Exploring the latest trends in web development, from AI integration to serverless architecture. Modern frameworks are revolutionizing how we build applications.",
-      image:
-        "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=500&h=300&fit=crop",
-      author: "Sarah Johnson",
-      avatar:
-        "https://images.unsplash.com/photo-1494790108755-2616b612b6d3?w=40&h=40&fit=crop&crop=face",
-      date: "2 hours ago",
-      likes: 42,
-      comments: 8,
-    },
-    {
-      id: 2,
-      title: "Mastering React Hooks",
-      description:
-        "A comprehensive guide to React Hooks and how they can simplify your component logic. Learn about useState, useEffect, and custom hooks with practical examples.",
-      image:
-        "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=500&h=300&fit=crop",
-      author: "Mike Chen",
-      avatar:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face",
-      date: "5 hours ago",
-      likes: 67,
-      comments: 12,
-    },
-    {
-      id: 3,
-      title: "Design Systems That Scale",
-      description:
-        "Building maintainable design systems for large applications. Learn about component libraries, design tokens, and how to create consistency across teams.",
-      image:
-        "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=500&h=300&fit=crop",
-      author: "Emma Davis",
-      avatar:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face",
-      date: "1 day ago",
-      likes: 89,
-      comments: 15,
-    },
-    {
-      id: 4,
-      title: "AI in Modern Development",
-      description:
-        "How artificial intelligence is transforming the way we write code. From code completion to automated testing, AI tools are becoming essential for developers.",
-      image:
-        "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=500&h=300&fit=crop",
-      author: "Alex Rodriguez",
-      avatar:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face",
-      date: "2 days ago",
-      likes: 134,
-      comments: 23,
-    },
-    {
-      id: 5,
-      title: "Mobile-First Development",
-      description:
-        "Best practices for building responsive applications that work seamlessly across all devices. Learn about mobile optimization and progressive enhancement.",
-      image:
-        "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=500&h=300&fit=crop",
-      author: "Lisa Wang",
-      avatar:
-        "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=40&h=40&fit=crop&crop=face",
-      date: "3 days ago",
-      likes: 78,
-      comments: 19,
-    },
-    {
-      id: 6,
-      title: "The Art of Code Review",
-      description:
-        "How to conduct effective code reviews that improve code quality and team collaboration. Tips for giving and receiving constructive feedback.",
-      image:
-        "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=500&h=300&fit=crop",
-      author: "David Kim",
-      avatar:
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop&crop=face",
-      date: "4 days ago",
-      likes: 56,
-      comments: 11,
-    },
-  ];
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await getAllPost();
+        setBlogs(response.data.data);
+        console.log("Response in the frontend is ", response);
+      } catch (error) {
+        console.log("error occured while fetching the blog details", error);
+        throw error;
+      }
+    };
+    fetchBlogs();
+  }, []);
+
+  console.log(blogs)
+
 
   const loadMoreBlogs = () => {
-    setVisibleBlogs((prev) => Math.min(prev + 2, blogData.length));
+    setVisibleBlogs((prev) => Math.min(prev + 2, blogs.length));
   };
 
   return (
@@ -119,9 +61,6 @@ const HomePage: React.FC = () => {
               >
                 Get Started
               </button>
-              <button className="px-8 py-3 border border-white text-white rounded-lg font-semibold hover:bg-white hover:text-black transition-all duration-200">
-                Learn More
-              </button>
             </div>
           </div>
         </section>
@@ -130,7 +69,7 @@ const HomePage: React.FC = () => {
       {/* Blog Feed */}
       <main className="max-w-2xl mx-auto px-4 py-8">
         <div className="space-y-8">
-          {blogData.slice(0, visibleBlogs).map((blog) => (
+          {blogs.slice(0, visibleBlogs).map((blog) => (
             <article
               key={blog.id}
               className="bg-[#1a1a1a] border border-gray-800 rounded-lg overflow-hidden"
@@ -144,9 +83,9 @@ const HomePage: React.FC = () => {
                 /> */}
                 <div className="ml-3">
                   <h3 className="text-white font-semibold text-sm">
-                    {blog.author}
+                    {blog.userDetails.name}
                   </h3>
-                  <p className="text-gray-400 text-xs">{blog.date}</p>
+                  {/* <p className="text-gray-400 text-xs">{blog.date}</p> */}
                 </div>
               </div>
 
@@ -176,7 +115,7 @@ const HomePage: React.FC = () => {
         </div>
 
         {/* Load More Button */}
-        {visibleBlogs < blogData.length && (
+        {visibleBlogs < blogs.length && (
           <div className="text-center mt-8">
             <button
               onClick={loadMoreBlogs}
@@ -188,7 +127,7 @@ const HomePage: React.FC = () => {
         )}
 
         {/* End of Feed Message */}
-        {visibleBlogs >= blogData.length && (
+        {visibleBlogs >= blogs.length && (
           <div className="text-center mt-8 py-8">
             <p className="text-gray-400">You've reached the end of the feed!</p>
           </div>

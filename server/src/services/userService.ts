@@ -8,6 +8,7 @@ import { ICreateJWT } from "../utils/generateTokens";
 import {
   ICreatePostData,
   ICreatePostDataResponse,
+  IGetAllBlogsResponse,
   INewDetails,
   IUserLoginData,
   IUserLoginResponse,
@@ -161,6 +162,33 @@ class UserService implements IUserServices {
           data: null,
         };
       }
+    } catch (error) {
+      console.log(
+        "error occured while creating post in the userService creatpost funciton ",
+        error
+      );
+      throw error;
+    }
+  }
+
+  async getAllPosts(): Promise<IGetAllBlogsResponse> {
+    try {
+      const response = await this._blogRepository.getAllPosts();
+      console.log(response);
+      if(response){
+        return {
+          success:true,
+          message:"data fetched successfully",
+          data:response
+        }
+      }else{
+    return {
+        success: false,
+        message: "data feching failed ",
+        data: null,
+      };
+      }
+  
     } catch (error) {
       console.log(
         "error occured while creating post in the userService creatpost funciton ",

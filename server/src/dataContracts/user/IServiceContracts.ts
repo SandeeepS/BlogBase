@@ -31,7 +31,8 @@ export interface IUserLoginData {
 export interface ICreatePostData {
   title: string;
   description: string;
-  image:string;
+  image: string;
+  userId:string;
 }
 
 export interface ICreatePostDataResponse {
@@ -41,8 +42,22 @@ export interface ICreatePostDataResponse {
     _id: mongoose.Types.ObjectId;
     title: string;
     description: string;
-    image:string;
+    image: string;
+    userId:mongoose.Types.ObjectId;
   } | null;
+}
+
+export interface IGetAllBlogsResponse {
+  success: boolean;
+  message: string;
+  data:
+    | {
+        _id: mongoose.Types.ObjectId;
+        title: string;
+        description: string;
+        image: string;
+      }[]
+    | null;
 }
 
 export interface INewDetails {

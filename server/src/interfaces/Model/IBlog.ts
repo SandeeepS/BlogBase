@@ -5,5 +5,6 @@ export interface BlogInterface extends Document {
   title: string;
   description: string;
   image:string;
+  userId: mongoose.Types.ObjectId;
 }
 
