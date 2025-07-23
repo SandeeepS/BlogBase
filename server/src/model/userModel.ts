@@ -18,6 +18,10 @@ const userSchema: Schema<UserInterface> = new Schema({
     type: Number,
     required: true,
   },
+  isDeleted:{
+    type:Boolean,
+    default:false
+  }
 });
 
 const userModel: Model<UserInterface> = mongoose.model<UserInterface>(

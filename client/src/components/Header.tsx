@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../app/store";
 import { useDispatch } from "react-redux";
 import { userLogout } from "../app/slices/authSlice";
-import ConfirmModal from "./ConfirmModal"; // <- Import Modal
+import ConfirmModal from "./ConfirmModal"; 
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -59,6 +59,11 @@ const Header: React.FC = () => {
               </>
             ) : (
               <>
+             <ul>
+              <li onClick={() => {navigate("/homepage")} } className="cursor-pointer text-white mx-2">
+                HOME
+              </li>
+             </ul>
                 <button
                   className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-100 transition-all duration-200 flex items-center"
                   onClick={handleCreatePost}
@@ -128,7 +133,7 @@ const Header: React.FC = () => {
         </div>
       </div>
 
-      {/* 🔒 Logout Confirmation Modal */}
+      {/*Logout Confirmation Modal */}
       <ConfirmModal
         isOpen={showLogoutModal}
         title="Confirm Sign Out"

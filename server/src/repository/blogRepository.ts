@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import {
   ICreatePostData,
   ICreatePostDateResponse,
+  IDeleteBlogData,
+  IDeleteBlogDataResponse,
   IGetAllBlogsResponse,
   IGetPostsByblogdResponse,
   IGetPostsByBlogId,
@@ -79,7 +81,8 @@ async getPostsByUserId(data: IGetPostsByUserId): Promise<IGetPostsByUserIdRespon
     const response = await blogModel.aggregate([
       {
         $match: {
-          userId: userObjectId
+          userId: userObjectId,
+          isDeleted:false
         },
       },
       {
@@ -130,7 +133,21 @@ async updatePost(data: IUpadatePostData): Promise<IUpdatePostResponse | null> {
     return response;
   } catch (error) {
     console.log(
-      "Error occurred while getting the posts by blogId in getPostsByUserId function in the blogRepository",
+      "Error occurred while getting the posts by blogId in updatePost function in the blogRepository",
+      error
+    );
+    throw error;
+  }
+}
+
+async deleteBlog(data: IDeleteBlogData): Promise<IDeleteBlogDataResponse | null> {
+  try {
+    const response = await blogModel.findByIdAndUpdate({_id:data.blogId},{$set:{isDeleted:true}});
+    console.log("details of the blog accessed after isDeleted true",response)
+    return response;
+  } catch (error) {
+    console.log(
+      "Error occurred while deleting the blogs by blogId in deleteblog function in the blogRepository",
       error
     );
     throw error;

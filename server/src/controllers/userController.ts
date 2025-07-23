@@ -195,6 +195,30 @@ class userController implements IUserController {
       next(error);
     }
   }
+
+  
+  async deleteBlog(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { blogId} = req.body;
+      console.log("blog id is ", blogId);
+      const response = await this._userService.deleteBlog({blogId});
+      if(response.success){
+        res.status(200).json(createSuccessResponse(response));
+      }else{
+        res.status(200).json(createErrorResponse("false","failed to delete the blog"));
+      }
+    } catch (error) {
+      console.log(
+        "error occured while deleting  the user blog  by blogid  in the usercontroller in the deleteBlog",
+        error
+      );
+      next(error);
+    }
+  }
 }
 
 export default userController;

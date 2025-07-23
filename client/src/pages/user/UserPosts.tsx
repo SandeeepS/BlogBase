@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
-import {  getPostByUserId } from "../../api/user";
+import { deleteBlog, getPostByUserId } from "../../api/user";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../app/store";
 import { useNavigate } from "react-router-dom";
+import ConfirmModal from "../../components/ConfirmModal";
 
 const UserPosts: React.FC = () => {
   const userData = useSelector((state: RootState) => state.auth.userData);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [selectedBlogId, setSelectedBlogId] = useState<string | null>(null);
+
   const userId = userData?.id;
   const navigate = useNavigate();
   const [userBlogs, setUserBlogs] = useState<
@@ -31,6 +35,21 @@ const UserPosts: React.FC = () => {
 
     fetchUserBlogs();
   }, [userId]);
+
+  const handleDeleteConfirmed = async () => {
+    if (!selectedBlogId) return;
+
+    try {
+      await deleteBlog(selectedBlogId);
+      setUserBlogs((prevBlogs) =>
+        prevBlogs.filter((blog) => blog._id !== Number(selectedBlogId))
+      );
+      setShowConfirmationModal(false);
+      setSelectedBlogId(null);
+    } catch (error) {
+      console.error("Failed to delete blog:", error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#121212]">
@@ -67,10 +86,19 @@ const UserPosts: React.FC = () => {
 
                 {/* Actions */}
                 <div className="flex space-x-4">
-                  <button onClick={() => navigate(`/editPost/${blog._id}`)} className="px-4 py-2 text-sm text-white bg-blue-600 rounded hover:bg-blue-700 transition-all duration-200">
+                  <button
+                    onClick={() => navigate(`/editPost/${blog._id}`)}
+                    className="px-4 py-2 text-sm text-white bg-blue-600 rounded hover:bg-blue-700 transition-all duration-200"
+                  >
                     Edit
                   </button>
-                  <button className="px-4 py-2 text-sm text-white bg-red-600 rounded hover:bg-red-700 transition-all duration-200">
+                  <button
+                    onClick={() => {
+                      setSelectedBlogId(blog._id.toString());
+                      setShowConfirmationModal(true);
+                    }}
+                    className="px-4 py-2 text-sm text-white bg-red-600 rounded hover:bg-red-700 transition-all duration-200"
+                  >
                     Delete
                   </button>
                 </div>
@@ -82,6 +110,19 @@ const UserPosts: React.FC = () => {
             <p className="text-center text-gray-400">No posts to display.</p>
           )}
         </div>
+
+        <ConfirmModal
+          isOpen={showConfirmationModal}
+          title="Confirm Delete Blog"
+          message="Are you sure you want delete blog?"
+          confirmText="Delete"
+          cancelText="Cancel"
+          onConfirm={handleDeleteConfirmed}
+          onCancel={() => {
+            setShowConfirmationModal(false);
+            setSelectedBlogId(null);
+          }}
+        />
       </main>
     </div>
   );

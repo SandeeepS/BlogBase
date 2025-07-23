@@ -1,4 +1,4 @@
-import { ICreatePostData, ICreatePostDataResponse, IGetAllBlogsResponse, IGetPostsByBlogId, IGetPostsByBlogIdResponse, IGetPostsByUserId, IGetPostsByUserIdResponse, IUpadatePostData, IUpdatePostResponse, IUserLoginData, IUserLoginResponse, IUserSignupData, IUserSingupResponse } from "../../dataContracts/user/IServiceContracts";
+import { ICreatePostData, ICreatePostDataResponse, IDeleteBlogData, IDeleteBlogDataResponse, IGetAllBlogsResponse, IGetPostsByBlogId, IGetPostsByBlogIdResponse, IGetPostsByUserId, IGetPostsByUserIdResponse, IUpadatePostData, IUpdatePostResponse, IUserLoginData, IUserLoginResponse, IUserSignupData, IUserSingupResponse } from "../../dataContracts/user/IServiceContracts";
 
 export interface IUserServices {
  
@@ -7,8 +7,9 @@ export interface IUserServices {
     createPost(data: ICreatePostData): Promise<ICreatePostDataResponse> 
     getAllPosts(): Promise<IGetAllBlogsResponse>
     getPostsByUserId(data:IGetPostsByUserId): Promise<IGetPostsByUserIdResponse>
-     getPostsByBlogId(data:IGetPostsByBlogId): Promise<IGetPostsByBlogIdResponse> 
-      updatePost(data: IUpadatePostData): Promise<IUpdatePostResponse> 
+    getPostsByBlogId(data:IGetPostsByBlogId): Promise<IGetPostsByBlogIdResponse> 
+    updatePost(data: IUpadatePostData): Promise<IUpdatePostResponse> 
+    deleteBlog(data: IDeleteBlogData): Promise<IDeleteBlogDataResponse> 
 
 }
 

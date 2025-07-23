@@ -27,8 +27,6 @@ export interface IGetPostsByUserId {
   userId: string;
 }
 
-
-
 export interface IGetPostsByUserIdResponse {
   _id: mongoose.Types.ObjectId;
   title: string;
@@ -41,7 +39,6 @@ export interface IGetPostsByBlogId {
   blogId: string;
 }
 
-
 export interface IGetPostsByblogdResponse {
   _id: mongoose.Types.ObjectId;
   title: string;
@@ -49,7 +46,6 @@ export interface IGetPostsByblogdResponse {
   image: string;
   userId: mongoose.Types.ObjectId;
 }
-
 
 export interface IUpadatePostData {
   blogId: string;
@@ -60,12 +56,23 @@ export interface IUpadatePostData {
   };
 }
 
-
-
 export interface IUpdatePostResponse {
   _id: mongoose.Types.ObjectId;
   title: string;
   description: string;
   image: string;
   userId: mongoose.Types.ObjectId;
+}
+
+export interface IDeleteBlogData {
+  blogId: string;
+}
+
+export interface IDeleteBlogDataResponse {
+  _id: mongoose.Types.ObjectId;
+  title: string;
+  description: string;
+  image: string;
+  userId: mongoose.Types.ObjectId;
+  isDeleted: boolean;
 }

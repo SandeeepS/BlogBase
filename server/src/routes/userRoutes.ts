@@ -23,6 +23,7 @@ userRouter.get("/allPosts",async(req:Request,res:Response,next:NextFunction) => 
 userRouter.get("/postByUserId",async(req:Request,res:Response,next:NextFunction) => await controller.getPostsByUserId(req,res,next));
 userRouter.get("/postByBlogId",async(req:Request,res:Response,next:NextFunction) => await controller.getPostByBlogId(req,res,next));
 userRouter.put("/updatePost",async(req:Request,res:Response,next:NextFunction) => await controller.updatePost(req,res,next));
+userRouter.put("/blog",async(req:Request,res:Response,next:NextFunction) => await controller.deleteBlog(req,res,next));
 
 
 export default userRouter

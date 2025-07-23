@@ -138,3 +138,20 @@ export interface IUpadatePostData {
     image: string;
   };
 }
+
+export interface IDeleteBlogData{
+  blogId:string;
+}
+
+export interface IDeleteBlogDataResponse{
+    success: boolean;
+  message: string;
+  data: {
+    _id: mongoose.Types.ObjectId;
+    title: string;
+    description: string;
+    image: string;
+    userId: mongoose.Types.ObjectId;
+    isDeleted:boolean
+  } | null;
+}

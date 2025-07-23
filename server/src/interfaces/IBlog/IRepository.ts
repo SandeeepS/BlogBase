@@ -1,4 +1,4 @@
-import { ICreatePostData, ICreatePostDateResponse, IGetAllBlogsResponse, IGetPostsByblogdResponse, IGetPostsByBlogId, IGetPostsByUserId, IGetPostsByUserIdResponse, IUpadatePostData, IUpdatePostResponse } from "../../dataContracts/blog/IRespositoryContracts";
+import { ICreatePostData, ICreatePostDateResponse, IDeleteBlogData, IDeleteBlogDataResponse, IGetAllBlogsResponse, IGetPostsByblogdResponse, IGetPostsByBlogId, IGetPostsByUserId, IGetPostsByUserIdResponse, IUpadatePostData, IUpdatePostResponse } from "../../dataContracts/blog/IRespositoryContracts";
 
 
 export interface IBlogs {
@@ -7,4 +7,5 @@ export interface IBlogs {
     getPostsByUserId(data:IGetPostsByUserId): Promise<IGetPostsByUserIdResponse[] | null>
     getPostsByBlogId(data: IGetPostsByBlogId): Promise<IGetPostsByblogdResponse| null>
     updatePost(data: IUpadatePostData): Promise<IUpdatePostResponse | null>
+    deleteBlog(data: IDeleteBlogData): Promise<IDeleteBlogDataResponse | null> 
 }

@@ -6,4 +6,5 @@ export interface UserInterface extends Document {
   password: string;
   email: string;
   phone: number;
+  isDeleted:boolean
 }

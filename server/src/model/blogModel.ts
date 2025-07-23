@@ -17,6 +17,10 @@ const blogSchema: Schema<BlogInterface> = new Schema({
   userId:{
     type: Schema.Types.ObjectId,
     required:true,
+  },
+  isDeleted:{
+    type:Boolean,
+    default: false
   }
 });
 

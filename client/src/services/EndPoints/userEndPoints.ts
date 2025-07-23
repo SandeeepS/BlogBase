@@ -6,7 +6,7 @@ const userRoutes = {
    getPostByUserId:"/user/postByUserId",
    getPostByBlogId:"/user/postByBlogId",
    updatePost:"/user/updatePost",
-
+   deleteBlog:"/user/blog",
 }
 
 export default userRoutes;

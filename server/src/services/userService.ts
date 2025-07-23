@@ -8,6 +8,8 @@ import { ICreateJWT } from "../utils/generateTokens";
 import {
   ICreatePostData,
   ICreatePostDataResponse,
+  IDeleteBlogData,
+  IDeleteBlogDataResponse,
   IGetAllBlogsResponse,
   IGetPostsByBlogId,
   IGetPostsByBlogIdResponse,
@@ -279,6 +281,33 @@ class UserService implements IUserServices {
     } catch (error) {
       console.log(
         "error occured while updating  the user posts by id  in the userService updatePost funciton ",
+        error
+      );
+      throw error;
+    }
+  }
+
+
+    async deleteBlog(data: IDeleteBlogData): Promise<IDeleteBlogDataResponse> {
+    try {
+      const response = await this._blogRepository.deleteBlog(data);
+      console.log(response);
+      if (response) {
+        return {
+          success: true,
+          message: "data fetched successfully",
+          data: response,
+        };
+      } else {
+        return {
+          success: false,
+          message: "data feching failed",
+          data: null,
+        };
+      }
+    } catch (error) {
+      console.log(
+        "error occured while deleting blog  by blogId  in the userService deleteBlog funciton ",
         error
       );
       throw error;
