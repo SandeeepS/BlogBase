@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../app/store";
 import { useDispatch } from "react-redux";
 import { userLogout } from "../app/slices/authSlice";
-import ConfirmModal from "./ConfirmModal"; 
+import ConfirmModal from "./ConfirmModal";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userData } = useAppSelector((state) => state.auth);
+  const userName = userData?.name;
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -59,11 +60,16 @@ const Header: React.FC = () => {
               </>
             ) : (
               <>
-             <ul>
-              <li onClick={() => {navigate("/homepage")} } className="cursor-pointer text-white mx-2">
-                HOME
-              </li>
-             </ul>
+                <ul>
+                  <li
+                    onClick={() => {
+                      navigate("/homepage");
+                    }}
+                    className="cursor-pointer text-white mx-2"
+                  >
+                    HOME
+                  </li>
+                </ul>
                 <button
                   className="px-4 py-2 bg-white text-black rounded-lg hover:bg-gray-100 transition-all duration-200 flex items-center"
                   onClick={handleCreatePost}
@@ -84,6 +90,9 @@ const Header: React.FC = () => {
                   Create Post
                 </button>
 
+                <div>
+                  <h5 className="text-white">Hai {userName}</h5>
+                </div>
                 <div className="relative">
                   <button
                     onClick={() => setShowDropdown(!showDropdown)}
