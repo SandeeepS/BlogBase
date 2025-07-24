@@ -8,7 +8,7 @@ const PageNotFound: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center bg-[#121212] px-4">
       <div className="max-w-md w-full text-center">
         <div className="mx-auto h-12 w-12 flex items-center justify-center rounded-full border-2 border-white mb-6">
-          <img src="/public/logo.png.png" alt="Logo" className="h-6 w-6" />
+          <img src="/logo.png.png" alt="Logo" className="h-6 w-6" />
         </div>
 
         <h1 className="text-5xl font-bold text-white mb-4">404</h1>

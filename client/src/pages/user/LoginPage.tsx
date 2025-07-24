@@ -49,7 +49,7 @@ const LoginPage: React.FC = () => {
       <div className="max-w-md w-full">
         <div className="text-center">
           <div className="mx-auto h-12 w-12 flex items-center justify-center rounded-full border-2 border-white mb-4">
-            <img src="/public/logo.png.png" alt="Logo" className="h-6 w-6" />
+            <img src="/logo.png.png" alt="Logo" className="h-6 w-6" />
           </div>
           <h2 className="text-3xl font-bold text-white mb-2">
             Welcome Back To BlogBase

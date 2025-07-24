@@ -33,7 +33,7 @@ const Header: React.FC = () => {
           <div className="flex items-center">
             <div className="h-8 w-8 rounded-full border border-white flex items-center justify-center mr-3">
               <img
-                src="/public/logo.png.png"
+                src="/logo.png.png"
                 alt="BlogBase"
                 className="h-5 w-5"
               />

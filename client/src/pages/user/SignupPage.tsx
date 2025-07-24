@@ -58,7 +58,7 @@ const SignupPage: React.FC = () => {
         <div className="text-center">
           <div className="mx-auto h-12 w-12 flex items-center justify-center rounded-full border-2 border-white mb-4">
             <div className="h-6 w-6 text-white">
-              <img src="/public/logo.png.png" alt="" />
+              <img src="/logo.png.png" alt="" />
             </div>
           </div>
           <h2 className="text-3xl font-bold text-white mb-2">Join BlogBase</h2>
