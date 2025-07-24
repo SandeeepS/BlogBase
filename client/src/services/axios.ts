@@ -2,7 +2,7 @@ import axios from "axios";
 import type { AxiosInstance } from "axios";
 
 //use this isUsingProduction false for locally testing
-const isUsingProduction = false;
+const isUsingProduction = true;
 
 const Api: AxiosInstance = axios.create({
   baseURL: isUsingProduction
