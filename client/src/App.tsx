@@ -7,7 +7,6 @@ import CreatePost from "./pages/user/CreatePost";
 import UserLoggedIn from "./middleware/User/UserLoggedIn";
 import UserLoggedOut from "./middleware/User/UserLoggedOut";
 import PageNotFound from "./pages/common/PageNotFound";
-// import UserLayout from "./pages/user/UserLayout";
 import { Toaster } from "react-hot-toast";
 import UserPosts from "./pages/user/UserPosts";
 import EditPost from "./pages/user/EditPost";
@@ -17,21 +16,23 @@ function App() {
     <>
       <Toaster position="top-center" reverseOrder={false} />
       <Routes>
-        <Route path="" element={<UserLoggedOut />}>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/homepage" element={<HomePage />} />
+        {/* Public routes (when user is logged out) */}
+        <Route path="/" element={<UserLoggedOut />}>
+          <Route index element={<HomePage/>} /> This handles the root path
+          <Route path="login" element={<LoginPage />} />
+          <Route path="signup" element={<SignupPage />} />
         </Route>
 
+        {/* Protected routes (when user is logged in) */}
         <Route path="/" element={<UserLoggedIn />}>
-          {/* <Route path="/" element={<UserLayout />}> */}
-          <Route path="user/homepage" element={<HomePage />} />
-          <Route path="/createpost" element={<CreatePost />} />
-          <Route path="/myposts" element={<UserPosts />} />
-          <Route path="/editPost/:blogId" element={<EditPost />} />
-          {/* </Route> */}
+          <Route path="homepage" element={<HomePage />} />
+          <Route path="createpost" element={<CreatePost />} />
+          <Route path="myposts" element={<UserPosts />} />
+          <Route path="editPost/:blogId" element={<EditPost />} />
         </Route>
-        <Route path={"*"} element={<PageNotFound />} />
+
+        {/* Catch all route for 404 */}
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </>
   );
