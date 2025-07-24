@@ -15,7 +15,7 @@ const server = http.createServer(app);
 app.use(
   cors({
     origin: (origin, callback) => {
-      const allowedOrigins = ["http://localhost:5173","blog-base-lyart.vercel.app"];
+      const allowedOrigins = ["http://localhost:5173","https://blog-base-lyart.vercel.app"];
 
       if (!origin) {
         return callback(null, true);
